@@ -1,0 +1,31 @@
+from qiskit import QuantumCircuit, transpile
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+from ibm_quantum_widgets import *
+from qiskit_ibm_runtime import QiskitRuntimeService, Sampler, Estimator, Session, Options
+
+service = QiskitRuntimeService(channel="ibm_quantum")
+-------------------------------------------------------
+
+
+from qiskit import QuantumCircuit, Aer, execute
+
+# Create a quantum circuit with 16 qubits and measure all qubits
+circuit = QuantumCircuit(16, 16)
+circuit.h(range(16))
+circuit.measure(range(16), range(16))
+
+# Visualize the circuit
+print(circuit)
+circuit_drawer(circuit, output='mpl')
+
+# Simulate the circuit
+simulator = Aer.get_backend('qasm_simulator')
+result = execute(circuit, simulator, shots=1).result()
+random_number = int(list(result.get_counts(circuit).keys())[0], 2)
+
+# Convert the random number to binary representation
+binary_number = format(random_number, '016b')
+
+print("Random number (decimal):", random_number)
+print("Random number (binary):", binary_number)
